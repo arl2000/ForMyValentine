@@ -59,16 +59,6 @@
             object-fit: contain;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 15px 30px;
-            font-size: 18px;
-            background: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
         .heart {
             position: absolute;
             font-size: 5rem;
@@ -77,6 +67,42 @@
             pointer-events: none;
             user-select: none;
             animation: floatHeart 5s infinite ease-in-out;
+        }
+
+        .letter {
+            display: none;
+            position: absolute;
+            top: 25%;
+            left: 26%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .letter h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            color: #d6336c;
+        }
+
+        .letter p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .letter .signature {
+            margin-top: 20px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            font-weight: bold;
+            color: #d6336c;
         }
 
         @keyframes floatHeart {
@@ -88,6 +114,11 @@
                 transform: translateY(-500px) scale(1.5);
                 opacity: 0;
             }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 600px) {
@@ -103,16 +134,20 @@
                 font-size: 2em;
             }
 
-            @keyframes floatHeart {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
+            .letter {
+                display: none;
+                position: absolute;
+                top: 25%;
+                left: 5%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 20px;
+                width: 80%;
+                max-width: 600px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                border-radius: 10px;
+                animation: fadeIn 2s ease-in-out;
             }
-            100% {
-                transform: translateY(-500px) scale(1.5);
-                opacity: 0;
-            }
-        }
         }
     </style>
 </head>
@@ -123,6 +158,17 @@
 
     <div class="slideshow" id="slideshowContainer"></div>
 
+    <div class="letter" id="letterContainer">
+        <h1>My Love ❤️</h1>
+        <p>
+            No matter how many days, months, or years pass, <br>
+            my love for you will always be the same. <br>
+            Thank you for all the beautiful moments we’ve shared. <br>
+            I cherish every second with you. I LOVE YOU❤️<br>
+        </p>
+        <p class="signature">— Yours Forever ❤️</p>
+    </div>
+
     <audio id="bgMusic" loop>
         <source src="Blue Yung Kai.mp3" type="audio/mpeg">
     </audio>
@@ -132,9 +178,10 @@
         let slides = [];
         const audio = document.getElementById("bgMusic");
         const startMusicButton = document.getElementById("startMusic");
+        const letterContainer = document.getElementById("letterContainer");
 
         function fetchImages() {
-            const imageFiles = ["image1.jpeg", "image2.jpeg", "image3.webp", "image4.webp", "image5.webp", "image6.webp", "image7.jpg", "image8.jpeg", "image9.jpeg","image10.jpeg","image11.jpeg","image12.webp","image13.webp","image14.jpeg","image15.jpeg","image16.webp","image17.jpg","image18.webp","image19.jpg","image20.webp","image21.webp","image22.webp","image23.jpg","image24.webp","image25.jpg","image26.jpg","image27.jpg"]; 
+            const imageFiles = ["image1.jpeg", "image2.jpeg","image3.webp", "image4.webp", "image5.webp", "image6.webp", "image7.jpg", "image8.jpeg", "image9.jpeg","image10.jpeg","image11.jpeg","image12.webp","image13.webp","image14.jpeg","image15.jpeg","image16.webp","image17.jpg","image18.webp","image19.jpg","image20.webp","image21.webp","image22.webp","image23.jpg","image24.webp","image25.jpg","image26.jpg","image27.jpg","image1.jpeg", "image2.jpeg", "image3.webp", "image4.webp", "image5.webp", "image6.webp", "image7.jpg", "image8.jpeg", "image26.jpg","image27.jpg",]; 
             const slideshowContainer = document.getElementById("slideshowContainer");
 
             imageFiles.forEach(imgName => {
@@ -170,11 +217,17 @@
                 setTimeout(showSlides, 5000); // Show next slide after 5 seconds
             } else {
                 setTimeout(() => {
-                    window.location.href = "letter.html"; // Redirect to letter page
-                }, 1000); // Wait 2 seconds before redirecting
+                    letterContainer.style.display = "block";
+                    letterContainer.style.opacity = 0;
+                    letterContainer.style.transform = "translateY(100px)";
+                    setTimeout(() => {
+                        letterContainer.style.transition = "all 2s ease-in-out";
+                        letterContainer.style.opacity = 1;
+                        letterContainer.style.transform = "translateY(0)";
+                    }, 100);
+                }, 1000); // Wait 1 second before showing the letter
             }
         }
-
 
         function createFloatingHearts() {
             const slideshow = document.getElementById("slideshowContainer");
