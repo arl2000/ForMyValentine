@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.2.2/dist/heic2any.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
     <title>Our Memories</title>
     <style>
+        * {
+            outline: 1px solid black;
+        }
         body {
             margin: 0;
             background: pink;
@@ -18,19 +22,36 @@
             overflow: hidden;
         }
 
+        h1{
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            animation: move 2s infinite;
+            color: #d6336c;
+        }
+
+        #startMusic{
+            padding: 15px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            background-color: #ff4b5c;
+        }
+
         .slideshow {
             width: 80%;
             height: 80%;
             position: relative;
+            overflow: hidden;
         }
 
         .slide {
-            display: none; 
+            display: none;
             width: 100%;
             height: 100%;
             position: absolute;
             text-align: center;
-            opacity: 0; 
+            opacity: 0;
             transform: translateX(100%);
             transition: opacity 1s ease-in-out, transform 1s ease-in-out;
         }
@@ -71,12 +92,37 @@
                 opacity: 0;
             }
         }
+
+        @media (max-width: 600px) {
+            body {
+                flex-direction: column;
+            }
+
+            .heart {
+                font-size: 3rem;
+            }
+
+            h1{
+                font-size: 2em;
+            }
+
+            @keyframes floatHeart {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-500px) scale(1.5);
+                opacity: 0;
+            }
+        }
+        }
     </style>
 </head>
 <body>
 
     <h1>Our Beautiful Memories ❤️</h1>
-    <button id="startMusic">remember this?</button>
+    <button id="startMusic">Click me</button>
 
     <div class="slideshow" id="slideshowContainer"></div>
 
@@ -110,7 +156,7 @@
 
         function showSlides() {
             slides.forEach(slide => {
-                slide.style.display = "none"; 
+                slide.style.display = "none";
                 slide.style.opacity = 0;
                 slide.style.transform = "translateX(100%)";
             });
@@ -118,40 +164,42 @@
             if (slides.length > 0) {
                 slideIndex = (slideIndex + 1) % slides.length;
                 let currentSlide = slides[slideIndex];
-                currentSlide.style.display = "block"; 
+                currentSlide.style.display = "block";
                 setTimeout(() => {
                     currentSlide.style.opacity = 1;
                     currentSlide.style.transform = "translateX(0)";
-                }, 10); 
+                }, 10);
 
-                setTimeout(showSlides, 10000); 
+                setTimeout(showSlides, 10000);
             }
         }
 
         function createFloatingHearts() {
-            const heartCount = 10; 
+            const slideshow = document.getElementById("slideshowContainer");
+            const heartCount = 10;
+
             for (let i = 0; i < heartCount; i++) {
                 let heart = document.createElement("div");
                 heart.classList.add("heart");
                 heart.innerHTML = "❤️"; 
 
-                const startPosX = Math.random() * window.innerWidth;
-                const startPosY = window.innerHeight;
+                const startPosX = Math.random() * slideshow.clientWidth;
+                const startPosY = slideshow.clientHeight; 
+
                 heart.style.left = `${startPosX}px`;
                 heart.style.top = `${startPosY}px`;
 
-                document.body.appendChild(heart);
+                slideshow.appendChild(heart);
 
-                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.animationDelay = `${Math.random() * 3}s`;
             }
         }
 
         startMusicButton.addEventListener("click", function() {
             audio.play().catch(error => console.error("Music autoplay blocked:", error));
-            startMusicButton.style.display = "none"; 
-            fetchImages(); 
-            showSlides(); 
-
+            startMusicButton.style.display = "none";
+            fetchImages();
+            showSlides();
             createFloatingHearts();
         });
     </script>
